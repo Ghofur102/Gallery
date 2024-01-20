@@ -92,7 +92,7 @@
                 <div id="main_comment"></div>
                 @foreach ($post->Comments as $item)
                     @if ($item->parent_id == null)
-                        <div class="my-3">
+                        <div class="my-3" style="border: 1px solid black;border-radius: 5px;">
                             <div class="card">
                                 <div class="card-header">
                                     <img src="{{ asset('SqOmUpVYTMafFRE2k2rbvW8XyButf7rwMnz1mbwY.jpg') }}"
@@ -169,172 +169,93 @@
                                     </button>
                                 </div>
                                 <div class="collapse" id="collapse-reply-comment{{ $item->id }}">
-                                    @auth
-                                        <form id="FormReplyComment{{ $item->id }}"
-                                            action="{{ route('komentar.store', ['sender_id' => Auth::user()->id, 'recipient_id' => $post->User->id, 'post_id' => $post->id, 'parent_id' => $item->id]) }}"
-                                            method="post">
-                                            @csrf
-                                            <div class="mb-3">
-                                                <textarea name="comment" id="reply-comment" class="form-control" rows="3" placeholder="Masukkan komentar."></textarea>
-                                            </div>
-                                            <div class="mb-3 text-end">
-                                                <button type="submit" onclick="StoreReplyComment({{ $item->id }})"
-                                                    class="btn btn-primary">Simpan</button>
-                                            </div>
-                                        </form>
-                                    @else
-                                        <form id="FormReplyComment"
-                                            action="{{ route('komentar.store', ['recipient_id' => $post->User->id, 'post_id' => $post->id]) }}"
-                                            method="post">
-                                            @csrf
-                                            <div class="mb-3">
-                                                <textarea name="comment" id="reply-comment" class="form-control" rows="3" placeholder="Masukkan komentar."></textarea>
-                                            </div>
-                                            <div class="mb-3 text-end">
-                                                <button type="submit" class="btn btn-primary">Simpan</button>
-                                            </div>
-                                        </form>
-                                    @endauth
-                                    @foreach ($item->ReplyComment() as $reply)
-                                    <div id="reply_comment{{ $reply->id }}"></div>
-                                        <div class="my-3">
-                                            <div class="card">
-                                                <div class="card-header">
-                                                    <img src="{{ asset('SqOmUpVYTMafFRE2k2rbvW8XyButf7rwMnz1mbwY.jpg') }}"
-                                                        style="width: 50px;height: 50px;border-radius: 50%;object-fit:cover;"
-                                                        alt="">
-                                                    <b>{{ $reply->Sender->name }}</b>
+                                    <div class="mx-5">
+                                        <div class="my-2">
+                                            @auth
+                                            <form id="FormReplyComment{{ $item->id }}"
+                                                action="{{ route('komentar.store', ['sender_id' => Auth::user()->id, 'recipient_id' => $post->User->id, 'post_id' => $post->id, 'parent_id' => $item->id]) }}"
+                                                method="post">
+                                                @csrf
+                                                <div class="mb-3">
+                                                    <textarea name="comment" id="reply-comment" class="form-control" rows="3" placeholder="Masukkan komentar."></textarea>
                                                 </div>
-                                                <div class="card-body">
-                                                    {{ $reply->komentar }}
+                                                <div class="mb-3 text-end">
+                                                    <button type="submit" onclick="StoreReplyComment({{ $item->id }})"
+                                                        class="btn btn-primary">Simpan</button>
                                                 </div>
-                                                <div class="card-footer d-flex">
-                                                    {{-- like --}}
-                                                    @auth
-                                                        <form id="FormLikeComment{{ $reply->id }}"
-                                                            action="{{ route('like.comment', ['sender' => Auth::user()->id, 'recipient' => $reply->Sender->id, 'comment' => $reply->id]) }}"
-                                                            method="post">
-                                                            @csrf
-                                                            <button type="submit" onclick="LikeComment({{ $reply->id }})"
-                                                                class="btn btn-light m-1">
-                                                                @if ($reply->IsLike())
-                                                                    <svg id="svg_like{{ $reply->id }}"
-                                                                        class="text-primary"
-                                                                        xmlns="http://www.w3.org/2000/svg" width="24"
-                                                                        height="24" viewBox="0 0 24 24">
-                                                                        <g fill="none" stroke="currentColor"
-                                                                            stroke-linecap="round" stroke-width="1.5">
-                                                                            <path
-                                                                                d="M16.472 20H4.1a.6.6 0 0 1-.6-.6V9.6a.6.6 0 0 1 .6-.6h2.768a2 2 0 0 0 1.715-.971l2.71-4.517a1.631 1.631 0 0 1 2.961 1.308l-1.022 3.408a.6.6 0 0 0 .574.772h4.576a2 2 0 0 1 1.929 2.526l-1.91 7A2 2 0 0 1 16.473 20Z" />
-                                                                            <path stroke-linejoin="round" d="M7 20V9" />
-                                                                        </g>
-                                                                    </svg>
-                                                                @else
-                                                                    <svg id="svg_like{{ $reply->id }}"
-                                                                        class="text-secondary"
-                                                                        xmlns="http://www.w3.org/2000/svg" width="24"
-                                                                        height="24" viewBox="0 0 24 24">
-                                                                        <g fill="none" stroke="currentColor"
-                                                                            stroke-linecap="round" stroke-width="1.5">
-                                                                            <path
-                                                                                d="M16.472 20H4.1a.6.6 0 0 1-.6-.6V9.6a.6.6 0 0 1 .6-.6h2.768a2 2 0 0 0 1.715-.971l2.71-4.517a1.631 1.631 0 0 1 2.961 1.308l-1.022 3.408a.6.6 0 0 0 .574.772h4.576a2 2 0 0 1 1.929 2.526l-1.91 7A2 2 0 0 1 16.473 20Z" />
-                                                                            <path stroke-linejoin="round" d="M7 20V9" />
-                                                                        </g>
-                                                                    </svg>
-                                                                @endif
-                                                                <b
-                                                                    id="count_like_comment{{ $reply->id }}">{{ $reply->CountLikes() }}</b>
-                                                            </button>
-                                                        </form>
-                                                    @else
-                                                        <form
-                                                            action="{{ route('like.comment', ['recipient' => $reply->Sender->id, 'comment' => $reply->id]) }}"
-                                                            method="post">
-                                                            @csrf
-                                                            <button type="button" class="btn btn-light m-1">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" width="24"
-                                                                    height="24" viewBox="0 0 24 24">
-                                                                    <g fill="none" stroke="currentColor"
-                                                                        stroke-linecap="round" stroke-width="1.5">
-                                                                        <path
-                                                                            d="M16.472 20H4.1a.6.6 0 0 1-.6-.6V9.6a.6.6 0 0 1 .6-.6h2.768a2 2 0 0 0 1.715-.971l2.71-4.517a1.631 1.631 0 0 1 2.961 1.308l-1.022 3.408a.6.6 0 0 0 .574.772h4.576a2 2 0 0 1 1.929 2.526l-1.91 7A2 2 0 0 1 16.473 20Z" />
-                                                                        <path stroke-linejoin="round" d="M7 20V9" />
-                                                                    </g>
-                                                                </svg>
-                                                                <b
-                                                                    id="count_like_comment{{ $reply->id }}">{{ $reply->CountLikes() }}</b>
-                                                            </button>
-                                                        </form>
-                                                    @endauth
-                                                    {{-- reply --}}
-                                                    <button type="button" data-bs-toggle="collapse"
-                                                        data-bs-target="#collapse-reply-comment{{ $reply->id }}"
-                                                        class="btn btn-light m-1">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24"
-                                                            height="24" viewBox="0 0 16 16">
-                                                            <path fill="currentColor"
-                                                                d="M15 5.5a4.5 4.5 0 1 1-9 0a4.5 4.5 0 0 1 9 0m-2.147.354l.003-.003A.5.5 0 0 0 13 5.503v-.006a.5.5 0 0 0-.146-.35l-2-2a.5.5 0 0 0-.708.707L11.293 5H8.5a.5.5 0 0 0 0 1h2.793l-1.147 1.146a.5.5 0 0 0 .708.708zM10.5 11c1.86 0 3.505-.923 4.5-2.337V9.5a2.5 2.5 0 0 1-2.5 2.5H8.688l-3.063 2.68A.98.98 0 0 1 4 13.942V12h-.5A2.5 2.5 0 0 1 1 9.5v-5A2.5 2.5 0 0 1 3.5 2h2.757a5.5 5.5 0 0 0 4.243 9" />
-                                                        </svg>
-                                                    </button>
+                                            </form>
+                                        @else
+                                            <form id="FormReplyComment"
+                                                action="{{ route('komentar.store', ['recipient_id' => $post->User->id, 'post_id' => $post->id]) }}"
+                                                method="post">
+                                                @csrf
+                                                <div class="mb-3">
+                                                    <textarea name="comment" id="reply-comment" class="form-control" rows="3" placeholder="Masukkan komentar."></textarea>
                                                 </div>
-                                                <div class="collapse" id="collapse-reply-comment{{ $reply->id }}">
-                                                    @auth
-                                                        <form id="FormReplyComment{{ $reply->id }}"
-                                                            action="{{ route('komentar.store', ['sender_id' => Auth::user()->id, 'recipient_id' => $reply->Sender->id, 'post_id' => $post->id, 'parent_id' => $reply->id]) }}"
-                                                            method="post">
-                                                            @csrf
-                                                            <div class="mb-3">
-                                                                <textarea name="comment" id="reply-comment" class="form-control" rows="3" placeholder="Masukkan komentar."></textarea>
-                                                            </div>
-                                                            <div class="mb-3 text-end">
-                                                                <button type="submit"
-                                                                    onclick="StoreReplyComment({{ $reply->id }})"
-                                                                    class="btn btn-primary">Simpan</button>
-                                                            </div>
-                                                        </form>
-                                                    @else
-                                                        <form id="FormReplyComment"
-                                                            action="{{ route('komentar.store', ['recipient_id' => $post->User->id, 'post_id' => $post->id]) }}"
-                                                            method="post">
-                                                            @csrf
-                                                            <div class="mb-3">
-                                                                <textarea name="comment" id="reply-comment" class="form-control" rows="3" placeholder="Masukkan komentar."></textarea>
-                                                            </div>
-                                                            <div class="mb-3 text-end">
-                                                                <button type="submit" class="btn btn-primary">Simpan</button>
-                                                            </div>
-                                                        </form>
-                                                    @endauth
+                                                <div class="mb-3 text-end">
+                                                    <button type="submit" class="btn btn-primary">Simpan</button>
                                                 </div>
-                                            </div>
+                                            </form>
+                                        @endauth
                                         </div>
-                                    @endforeach
-                                    @foreach ($item->Reply2Comment() as $reply2)
-                                    <div id="reply2_comment{{ $reply2->id }}"></div>
-                                        <div class="my-3">
-                                            <div class="card">
-                                                <div class="card-header">
-                                                    <img src="{{ asset('SqOmUpVYTMafFRE2k2rbvW8XyButf7rwMnz1mbwY.jpg') }}"
-                                                        style="width: 50px;height: 50px;border-radius: 50%;object-fit:cover;"
-                                                        alt="">
-                                                    <b>{{ $reply2->Sender->name }}</b>
-                                                </div>
-                                                <div class="card-body">
-                                                    {{ '@'.$reply2->Recipient->name }} {{ $reply2->komentar }}
-                                                </div>
-                                                <div class="card-footer d-flex">
-                                                    {{-- like --}}
-                                                    @auth
-                                                        <form id="FormLikeComment{{ $reply2->id }}"
-                                                            action="{{ route('like.comment', ['sender' => Auth::user()->id, 'recipient' => $reply2->Sender->id, 'comment' => $reply2->id]) }}"
-                                                            method="post">
-                                                            @csrf
-                                                            <button type="submit" onclick="LikeComment({{ $reply2->id }})"
-                                                                class="btn btn-light m-1">
-                                                                @if ($reply2->IsLike())
-                                                                    <svg id="svg_like{{ $reply2->id }}"
-                                                                        class="text-primary"
-                                                                        xmlns="http://www.w3.org/2000/svg" width="24"
+                                        @foreach ($item->ReplyComment() as $reply)
+                                        <div id="reply_comment{{ $reply->id }}"></div>
+                                            <div class="my-3">
+                                                <div class="card">
+                                                    <div class="card-header">
+                                                        <img src="{{ asset('SqOmUpVYTMafFRE2k2rbvW8XyButf7rwMnz1mbwY.jpg') }}"
+                                                            style="width: 50px;height: 50px;border-radius: 50%;object-fit:cover;"
+                                                            alt="">
+                                                        <b>{{ $reply->Sender->name }}</b>
+                                                    </div>
+                                                    <div class="card-body">
+                                                        {{ $reply->komentar }}
+                                                    </div>
+                                                    <div class="card-footer d-flex">
+                                                        {{-- like --}}
+                                                        @auth
+                                                            <form id="FormLikeComment{{ $reply->id }}"
+                                                                action="{{ route('like.comment', ['sender' => Auth::user()->id, 'recipient' => $reply->Sender->id, 'comment' => $reply->id]) }}"
+                                                                method="post">
+                                                                @csrf
+                                                                <button type="submit" onclick="LikeComment({{ $reply->id }})"
+                                                                    class="btn btn-light m-1">
+                                                                    @if ($reply->IsLike())
+                                                                        <svg id="svg_like{{ $reply->id }}"
+                                                                            class="text-primary"
+                                                                            xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                            height="24" viewBox="0 0 24 24">
+                                                                            <g fill="none" stroke="currentColor"
+                                                                                stroke-linecap="round" stroke-width="1.5">
+                                                                                <path
+                                                                                    d="M16.472 20H4.1a.6.6 0 0 1-.6-.6V9.6a.6.6 0 0 1 .6-.6h2.768a2 2 0 0 0 1.715-.971l2.71-4.517a1.631 1.631 0 0 1 2.961 1.308l-1.022 3.408a.6.6 0 0 0 .574.772h4.576a2 2 0 0 1 1.929 2.526l-1.91 7A2 2 0 0 1 16.473 20Z" />
+                                                                                <path stroke-linejoin="round" d="M7 20V9" />
+                                                                            </g>
+                                                                        </svg>
+                                                                    @else
+                                                                        <svg id="svg_like{{ $reply->id }}"
+                                                                            class="text-secondary"
+                                                                            xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                            height="24" viewBox="0 0 24 24">
+                                                                            <g fill="none" stroke="currentColor"
+                                                                                stroke-linecap="round" stroke-width="1.5">
+                                                                                <path
+                                                                                    d="M16.472 20H4.1a.6.6 0 0 1-.6-.6V9.6a.6.6 0 0 1 .6-.6h2.768a2 2 0 0 0 1.715-.971l2.71-4.517a1.631 1.631 0 0 1 2.961 1.308l-1.022 3.408a.6.6 0 0 0 .574.772h4.576a2 2 0 0 1 1.929 2.526l-1.91 7A2 2 0 0 1 16.473 20Z" />
+                                                                                <path stroke-linejoin="round" d="M7 20V9" />
+                                                                            </g>
+                                                                        </svg>
+                                                                    @endif
+                                                                    <b
+                                                                        id="count_like_comment{{ $reply->id }}">{{ $reply->CountLikes() }}</b>
+                                                                </button>
+                                                            </form>
+                                                        @else
+                                                            <form
+                                                                action="{{ route('like.comment', ['recipient' => $reply->Sender->id, 'comment' => $reply->id]) }}"
+                                                                method="post">
+                                                                @csrf
+                                                                <button type="button" class="btn btn-light m-1">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24"
                                                                         height="24" viewBox="0 0 24 24">
                                                                         <g fill="none" stroke="currentColor"
                                                                             stroke-linecap="round" stroke-width="1.5">
@@ -343,86 +264,169 @@
                                                                             <path stroke-linejoin="round" d="M7 20V9" />
                                                                         </g>
                                                                     </svg>
-                                                                @else
-                                                                    <svg id="svg_like{{ $reply2->id }}"
-                                                                        class="text-secondary"
-                                                                        xmlns="http://www.w3.org/2000/svg" width="24"
-                                                                        height="24" viewBox="0 0 24 24">
-                                                                        <g fill="none" stroke="currentColor"
-                                                                            stroke-linecap="round" stroke-width="1.5">
-                                                                            <path
-                                                                                d="M16.472 20H4.1a.6.6 0 0 1-.6-.6V9.6a.6.6 0 0 1 .6-.6h2.768a2 2 0 0 0 1.715-.971l2.71-4.517a1.631 1.631 0 0 1 2.961 1.308l-1.022 3.408a.6.6 0 0 0 .574.772h4.576a2 2 0 0 1 1.929 2.526l-1.91 7A2 2 0 0 1 16.473 20Z" />
-                                                                            <path stroke-linejoin="round" d="M7 20V9" />
-                                                                        </g>
-                                                                    </svg>
-                                                                @endif
-                                                                <b
-                                                                    id="count_like_comment{{ $reply2->id }}">{{ $reply2->CountLikes() }}</b>
-                                                            </button>
-                                                        </form>
-                                                    @else
-                                                        <form
-                                                            action="{{ route('like.comment', ['recipient' => $reply2->Sender->id, 'comment' => $reply2->id]) }}"
-                                                            method="post">
-                                                            @csrf
-                                                            <button type="button" class="btn btn-light m-1">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" width="24"
-                                                                    height="24" viewBox="0 0 24 24">
-                                                                    <g fill="none" stroke="currentColor"
-                                                                        stroke-linecap="round" stroke-width="1.5">
-                                                                        <path
-                                                                            d="M16.472 20H4.1a.6.6 0 0 1-.6-.6V9.6a.6.6 0 0 1 .6-.6h2.768a2 2 0 0 0 1.715-.971l2.71-4.517a1.631 1.631 0 0 1 2.961 1.308l-1.022 3.408a.6.6 0 0 0 .574.772h4.576a2 2 0 0 1 1.929 2.526l-1.91 7A2 2 0 0 1 16.473 20Z" />
-                                                                        <path stroke-linejoin="round" d="M7 20V9" />
-                                                                    </g>
-                                                                </svg>
-                                                                <b
-                                                                    id="count_like_comment{{ $reply2->id }}">{{ $reply2->CountLikes() }}</b>
-                                                            </button>
-                                                        </form>
-                                                    @endauth
-                                                    {{-- reply --}}
-                                                    <button type="button" data-bs-toggle="collapse"
-                                                        data-bs-target="#collapse-reply-comment{{ $reply2->id }}"
-                                                        class="btn btn-light m-1">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24"
-                                                            height="24" viewBox="0 0 16 16">
-                                                            <path fill="currentColor"
-                                                                d="M15 5.5a4.5 4.5 0 1 1-9 0a4.5 4.5 0 0 1 9 0m-2.147.354l.003-.003A.5.5 0 0 0 13 5.503v-.006a.5.5 0 0 0-.146-.35l-2-2a.5.5 0 0 0-.708.707L11.293 5H8.5a.5.5 0 0 0 0 1h2.793l-1.147 1.146a.5.5 0 0 0 .708.708zM10.5 11c1.86 0 3.505-.923 4.5-2.337V9.5a2.5 2.5 0 0 1-2.5 2.5H8.688l-3.063 2.68A.98.98 0 0 1 4 13.942V12h-.5A2.5 2.5 0 0 1 1 9.5v-5A2.5 2.5 0 0 1 3.5 2h2.757a5.5 5.5 0 0 0 4.243 9" />
-                                                        </svg>
-                                                    </button>
-                                                </div>
-                                                <div class="collapse" id="collapse-reply-comment{{ $reply2->id }}">
-                                                    @auth
-                                                        <form id="FormReply2Comment{{ $reply2->id }}"
-                                                            action="{{ route('komentar.store', ['sender_id' => Auth::user()->id, 'recipient_id' => $reply2->Sender->id, 'post_id' => $post->id, 'parent_id' => $reply2->id, 'parent_main_id' => $item->id]) }}"
-                                                            method="post">
-                                                            @csrf
-                                                            <div class="mb-3">
-                                                                <textarea name="comment" id="reply-comment" class="form-control" rows="3" placeholder="Masukkan komentar."></textarea>
-                                                            </div>
-                                                            <div class="mb-3 text-end">
-                                                                <button type="submit"
-                                                                    onclick="StoreReply2Comment({{ $reply2->id }})"
-                                                                    class="btn btn-primary">Simpan</button>
-                                                            </div>
-                                                        </form>
-                                                    @else
-                                                        <form id="FormReplyComment"
-                                                            action="{{ route('komentar.store', ['recipient_id' => $post->User->id, 'post_id' => $post->id]) }}"
-                                                            method="post">
-                                                            @csrf
-                                                            <div class="mb-3">
-                                                                <textarea name="comment" id="reply-comment" class="form-control" rows="3" placeholder="Masukkan komentar."></textarea>
-                                                            </div>
-                                                            <div class="mb-3 text-end">
-                                                                <button type="submit" class="btn btn-primary">Simpan</button>
-                                                            </div>
-                                                        </form>
-                                                    @endauth
+                                                                    <b
+                                                                        id="count_like_comment{{ $reply->id }}">{{ $reply->CountLikes() }}</b>
+                                                                </button>
+                                                            </form>
+                                                        @endauth
+                                                        {{-- reply --}}
+                                                        <button type="button" data-bs-toggle="collapse"
+                                                            data-bs-target="#collapse-reply-comment{{ $reply->id }}"
+                                                            class="btn btn-light m-1">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                height="24" viewBox="0 0 16 16">
+                                                                <path fill="currentColor"
+                                                                    d="M15 5.5a4.5 4.5 0 1 1-9 0a4.5 4.5 0 0 1 9 0m-2.147.354l.003-.003A.5.5 0 0 0 13 5.503v-.006a.5.5 0 0 0-.146-.35l-2-2a.5.5 0 0 0-.708.707L11.293 5H8.5a.5.5 0 0 0 0 1h2.793l-1.147 1.146a.5.5 0 0 0 .708.708zM10.5 11c1.86 0 3.505-.923 4.5-2.337V9.5a2.5 2.5 0 0 1-2.5 2.5H8.688l-3.063 2.68A.98.98 0 0 1 4 13.942V12h-.5A2.5 2.5 0 0 1 1 9.5v-5A2.5 2.5 0 0 1 3.5 2h2.757a5.5 5.5 0 0 0 4.243 9" />
+                                                            </svg>
+                                                        </button>
+                                                    </div>
+                                                    <div class="collapse" id="collapse-reply-comment{{ $reply->id }}">
+                                                        @auth
+                                                            <form id="FormReplyComment{{ $reply->id }}"
+                                                                action="{{ route('komentar.store', ['sender_id' => Auth::user()->id, 'recipient_id' => $reply->Sender->id, 'post_id' => $post->id, 'parent_id' => $reply->id]) }}"
+                                                                method="post">
+                                                                @csrf
+                                                                <div class="mb-3">
+                                                                    <textarea name="comment" id="reply-comment" class="form-control" rows="3" placeholder="Masukkan komentar."></textarea>
+                                                                </div>
+                                                                <div class="mb-3 text-end">
+                                                                    <button type="submit"
+                                                                        onclick="StoreReplyComment({{ $reply->id }})"
+                                                                        class="btn btn-primary">Simpan</button>
+                                                                </div>
+                                                            </form>
+                                                        @else
+                                                            <form id="FormReplyComment"
+                                                                action="{{ route('komentar.store', ['recipient_id' => $post->User->id, 'post_id' => $post->id]) }}"
+                                                                method="post">
+                                                                @csrf
+                                                                <div class="mb-3">
+                                                                    <textarea name="comment" id="reply-comment" class="form-control" rows="3" placeholder="Masukkan komentar."></textarea>
+                                                                </div>
+                                                                <div class="mb-3 text-end">
+                                                                    <button type="submit" class="btn btn-primary">Simpan</button>
+                                                                </div>
+                                                            </form>
+                                                        @endauth
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    @endforeach
+                                        @endforeach
+                                        @foreach ($item->Reply2Comment() as $reply2)
+                                        <div id="reply2_comment{{ $reply2->id }}"></div>
+                                            <div class="my-3">
+                                                <div class="card">
+                                                    <div class="card-header">
+                                                        <img src="{{ asset('SqOmUpVYTMafFRE2k2rbvW8XyButf7rwMnz1mbwY.jpg') }}"
+                                                            style="width: 50px;height: 50px;border-radius: 50%;object-fit:cover;"
+                                                            alt="">
+                                                        <b>{{ $reply2->Sender->name }}</b>
+                                                    </div>
+                                                    <div class="card-body">
+                                                        {{ '@'.$reply2->Recipient->name }} {{ $reply2->komentar }}
+                                                    </div>
+                                                    <div class="card-footer d-flex">
+                                                        {{-- like --}}
+                                                        @auth
+                                                            <form id="FormLikeComment{{ $reply2->id }}"
+                                                                action="{{ route('like.comment', ['sender' => Auth::user()->id, 'recipient' => $reply2->Sender->id, 'comment' => $reply2->id]) }}"
+                                                                method="post">
+                                                                @csrf
+                                                                <button type="submit" onclick="LikeComment({{ $reply2->id }})"
+                                                                    class="btn btn-light m-1">
+                                                                    @if ($reply2->IsLike())
+                                                                        <svg id="svg_like{{ $reply2->id }}"
+                                                                            class="text-primary"
+                                                                            xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                            height="24" viewBox="0 0 24 24">
+                                                                            <g fill="none" stroke="currentColor"
+                                                                                stroke-linecap="round" stroke-width="1.5">
+                                                                                <path
+                                                                                    d="M16.472 20H4.1a.6.6 0 0 1-.6-.6V9.6a.6.6 0 0 1 .6-.6h2.768a2 2 0 0 0 1.715-.971l2.71-4.517a1.631 1.631 0 0 1 2.961 1.308l-1.022 3.408a.6.6 0 0 0 .574.772h4.576a2 2 0 0 1 1.929 2.526l-1.91 7A2 2 0 0 1 16.473 20Z" />
+                                                                                <path stroke-linejoin="round" d="M7 20V9" />
+                                                                            </g>
+                                                                        </svg>
+                                                                    @else
+                                                                        <svg id="svg_like{{ $reply2->id }}"
+                                                                            class="text-secondary"
+                                                                            xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                            height="24" viewBox="0 0 24 24">
+                                                                            <g fill="none" stroke="currentColor"
+                                                                                stroke-linecap="round" stroke-width="1.5">
+                                                                                <path
+                                                                                    d="M16.472 20H4.1a.6.6 0 0 1-.6-.6V9.6a.6.6 0 0 1 .6-.6h2.768a2 2 0 0 0 1.715-.971l2.71-4.517a1.631 1.631 0 0 1 2.961 1.308l-1.022 3.408a.6.6 0 0 0 .574.772h4.576a2 2 0 0 1 1.929 2.526l-1.91 7A2 2 0 0 1 16.473 20Z" />
+                                                                                <path stroke-linejoin="round" d="M7 20V9" />
+                                                                            </g>
+                                                                        </svg>
+                                                                    @endif
+                                                                    <b
+                                                                        id="count_like_comment{{ $reply2->id }}">{{ $reply2->CountLikes() }}</b>
+                                                                </button>
+                                                            </form>
+                                                        @else
+                                                            <form
+                                                                action="{{ route('like.comment', ['recipient' => $reply2->Sender->id, 'comment' => $reply2->id]) }}"
+                                                                method="post">
+                                                                @csrf
+                                                                <button type="button" class="btn btn-light m-1">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                        height="24" viewBox="0 0 24 24">
+                                                                        <g fill="none" stroke="currentColor"
+                                                                            stroke-linecap="round" stroke-width="1.5">
+                                                                            <path
+                                                                                d="M16.472 20H4.1a.6.6 0 0 1-.6-.6V9.6a.6.6 0 0 1 .6-.6h2.768a2 2 0 0 0 1.715-.971l2.71-4.517a1.631 1.631 0 0 1 2.961 1.308l-1.022 3.408a.6.6 0 0 0 .574.772h4.576a2 2 0 0 1 1.929 2.526l-1.91 7A2 2 0 0 1 16.473 20Z" />
+                                                                            <path stroke-linejoin="round" d="M7 20V9" />
+                                                                        </g>
+                                                                    </svg>
+                                                                    <b
+                                                                        id="count_like_comment{{ $reply2->id }}">{{ $reply2->CountLikes() }}</b>
+                                                                </button>
+                                                            </form>
+                                                        @endauth
+                                                        {{-- reply --}}
+                                                        <button type="button" data-bs-toggle="collapse"
+                                                            data-bs-target="#collapse-reply-comment{{ $reply2->id }}"
+                                                            class="btn btn-light m-1">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                height="24" viewBox="0 0 16 16">
+                                                                <path fill="currentColor"
+                                                                    d="M15 5.5a4.5 4.5 0 1 1-9 0a4.5 4.5 0 0 1 9 0m-2.147.354l.003-.003A.5.5 0 0 0 13 5.503v-.006a.5.5 0 0 0-.146-.35l-2-2a.5.5 0 0 0-.708.707L11.293 5H8.5a.5.5 0 0 0 0 1h2.793l-1.147 1.146a.5.5 0 0 0 .708.708zM10.5 11c1.86 0 3.505-.923 4.5-2.337V9.5a2.5 2.5 0 0 1-2.5 2.5H8.688l-3.063 2.68A.98.98 0 0 1 4 13.942V12h-.5A2.5 2.5 0 0 1 1 9.5v-5A2.5 2.5 0 0 1 3.5 2h2.757a5.5 5.5 0 0 0 4.243 9" />
+                                                            </svg>
+                                                        </button>
+                                                    </div>
+                                                    <div class="collapse" id="collapse-reply-comment{{ $reply2->id }}">
+                                                        @auth
+                                                            <form id="FormReply2Comment{{ $reply2->id }}"
+                                                                action="{{ route('komentar.store', ['sender_id' => Auth::user()->id, 'recipient_id' => $reply2->Sender->id, 'post_id' => $post->id, 'parent_id' => $reply2->id, 'parent_main_id' => $item->id]) }}"
+                                                                method="post">
+                                                                @csrf
+                                                                <div class="mb-3">
+                                                                    <textarea name="comment" id="reply-comment" class="form-control" rows="3" placeholder="Masukkan komentar."></textarea>
+                                                                </div>
+                                                                <div class="mb-3 text-end">
+                                                                    <button type="submit"
+                                                                        onclick="StoreReply2Comment({{ $reply2->id }})"
+                                                                        class="btn btn-primary">Simpan</button>
+                                                                </div>
+                                                            </form>
+                                                        @else
+                                                            <form id="FormReplyComment"
+                                                                action="{{ route('komentar.store', ['recipient_id' => $post->User->id, 'post_id' => $post->id]) }}"
+                                                                method="post">
+                                                                @csrf
+                                                                <div class="mb-3">
+                                                                    <textarea name="comment" id="reply-comment" class="form-control" rows="3" placeholder="Masukkan komentar."></textarea>
+                                                                </div>
+                                                                <div class="mb-3 text-end">
+                                                                    <button type="submit" class="btn btn-primary">Simpan</button>
+                                                                </div>
+                                                            </form>
+                                                        @endauth
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    </div>
                                 </div>
                             </div>
                         </div>
