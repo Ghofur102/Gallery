@@ -2,7 +2,7 @@
 @section('content')
     <div class="container">
         <div class="row">
-            @foreach ($albums as $item)
+            @forelse ($albums as $item)
                 <div class="col-sm-12 col-md-6 col-lg-4">
                     <div class="card">
                         <div class="" style="position: relative;">
@@ -43,7 +43,11 @@
                         </div>
                     </div>
                 </div>
-            @endforeach
+            @empty
+            <div class="text-center">
+                <b>Tidak ada data.</b>
+            </div>
+            @endforelse
         </div>
     </div>
 @endsection
