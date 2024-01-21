@@ -33,7 +33,7 @@
                         <div class="p-4 text-black" style="background-color: #f8f9fa;">
                             <div class="d-flex justify-content-end text-center py-1">
                                 <div>
-                                    <p class="mb-1 h5">{{ Auth::user()->Count_Photos() }}</p>
+                                    <p class="mb-1 h5">{{ $count_posts }}</p>
                                     <p class="small text-muted mb-0">Photos</p>
                                 </div>
                             </div>

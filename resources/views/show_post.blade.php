@@ -1,11 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
-<style>
-    .text-love {
-        color: red !important;
-    }
-</style>
+    <style>
+        .text-love {
+            color: red !important;
+        }
+    </style>
     <div class="container">
         <div class="card">
             <div class="card-header">
@@ -16,17 +16,17 @@
                 </h1>
                 <a href="/profile-oranglain/{{ $post->User->id }}">
                     @guest
-                    <img src="{{ asset('profile-default.png') }}"
-                        style="width: 50px;height: 50px; object-fit:cover;border-radius:50%;" alt="">
-                @else
-                    @if (Auth::user()->foto_profil != null)
-                        <img src="{{ asset('storage/' . Auth::user()->foto_profil) }}"
-                            style="width: 50px;height: 50px; object-fit:cover;border-radius:50%;" alt="">
-                    @else
                         <img src="{{ asset('profile-default.png') }}"
                             style="width: 50px;height: 50px; object-fit:cover;border-radius:50%;" alt="">
-                    @endif
-                @endguest
+                    @else
+                        @if (Auth::user()->foto_profil != null)
+                            <img src="{{ asset('storage/' . Auth::user()->foto_profil) }}"
+                                style="width: 50px;height: 50px; object-fit:cover;border-radius:50%;" alt="">
+                        @else
+                            <img src="{{ asset('profile-default.png') }}"
+                                style="width: 50px;height: 50px; object-fit:cover;border-radius:50%;" alt="">
+                        @endif
+                    @endguest
                 </a>
                 - {{ \Carbon\Carbon::parse($post->created_at)->locale('id_ID')->diffForHumans() }}
             </div>
@@ -115,21 +115,23 @@
                         <div class="my-3" style="border: 1px solid black;border-radius: 5px;">
                             <div class="card">
                                 <div class="card-header">
-                                    @guest
-                                        <img src="{{ asset('profile-default.png') }}"
-                                            style="width: 50px;height: 50px; object-fit:cover;border-radius:50%;"
-                                            alt="">
-                                    @else
-                                        @if (Auth::user()->foto_profil != null)
-                                            <img src="{{ asset('storage/' . Auth::user()->foto_profil) }}"
-                                                style="width: 50px;height: 50px; object-fit:cover;border-radius:50%;"
-                                                alt="">
-                                        @else
+                                    <a href="/profile-oranglain/{{ $item->Sender->id }}">
+                                        @guest
                                             <img src="{{ asset('profile-default.png') }}"
                                                 style="width: 50px;height: 50px; object-fit:cover;border-radius:50%;"
                                                 alt="">
-                                        @endif
-                                    @endguest
+                                        @else
+                                            @if (Auth::user()->foto_profil != null)
+                                                <img src="{{ asset('storage/' . Auth::user()->foto_profil) }}"
+                                                    style="width: 50px;height: 50px; object-fit:cover;border-radius:50%;"
+                                                    alt="">
+                                            @else
+                                                <img src="{{ asset('profile-default.png') }}"
+                                                    style="width: 50px;height: 50px; object-fit:cover;border-radius:50%;"
+                                                    alt="">
+                                            @endif
+                                        @endguest
+                                    </a>
                                     <b>{{ $item->Sender->name }}</b>
                                 </div>
                                 <div class="card-body">
@@ -236,21 +238,23 @@
                                             <div class="my-3">
                                                 <div class="card">
                                                     <div class="card-header">
-                                                        @guest
-                                                            <img src="{{ asset('profile-default.png') }}"
-                                                                style="width: 50px;height: 50px; object-fit:cover;border-radius:50%;"
-                                                                alt="">
-                                                        @else
-                                                            @if (Auth::user()->foto_profil != null)
-                                                                <img src="{{ asset('storage/' . Auth::user()->foto_profil) }}"
-                                                                    style="width: 50px;height: 50px; object-fit:cover;border-radius:50%;"
-                                                                    alt="">
-                                                            @else
+                                                        <a href="/profile-oranglain/{{ $reply->Sender->id }}">
+                                                            @guest
                                                                 <img src="{{ asset('profile-default.png') }}"
                                                                     style="width: 50px;height: 50px; object-fit:cover;border-radius:50%;"
                                                                     alt="">
-                                                            @endif
-                                                        @endguest
+                                                            @else
+                                                                @if (Auth::user()->foto_profil != null)
+                                                                    <img src="{{ asset('storage/' . Auth::user()->foto_profil) }}"
+                                                                        style="width: 50px;height: 50px; object-fit:cover;border-radius:50%;"
+                                                                        alt="">
+                                                                @else
+                                                                    <img src="{{ asset('profile-default.png') }}"
+                                                                        style="width: 50px;height: 50px; object-fit:cover;border-radius:50%;"
+                                                                        alt="">
+                                                                @endif
+                                                            @endguest
+                                                        </a>
                                                         <b>{{ $reply->Sender->name }}</b>
                                                     </div>
                                                     <div class="card-body">
@@ -364,21 +368,23 @@
                                             <div class="my-3">
                                                 <div class="card">
                                                     <div class="card-header">
-                                                        @guest
-                                                            <img src="{{ asset('profile-default.png') }}"
-                                                                style="width: 50px;height: 50px; object-fit:cover;border-radius:50%;"
-                                                                alt="">
-                                                        @else
-                                                            @if (Auth::user()->foto_profil != null)
-                                                                <img src="{{ asset('storage/' . Auth::user()->foto_profil) }}"
-                                                                    style="width: 50px;height: 50px; object-fit:cover;border-radius:50%;"
-                                                                    alt="">
-                                                            @else
+                                                        <a href="/profile-oranglain/{{ $reply2->Sender->id }}">
+                                                            @guest
                                                                 <img src="{{ asset('profile-default.png') }}"
                                                                     style="width: 50px;height: 50px; object-fit:cover;border-radius:50%;"
                                                                     alt="">
-                                                            @endif
-                                                        @endguest
+                                                            @else
+                                                                @if (Auth::user()->foto_profil != null)
+                                                                    <img src="{{ asset('storage/' . Auth::user()->foto_profil) }}"
+                                                                        style="width: 50px;height: 50px; object-fit:cover;border-radius:50%;"
+                                                                        alt="">
+                                                                @else
+                                                                    <img src="{{ asset('profile-default.png') }}"
+                                                                        style="width: 50px;height: 50px; object-fit:cover;border-radius:50%;"
+                                                                        alt="">
+                                                                @endif
+                                                            @endguest
+                                                        </a>
                                                         <b>{{ $reply2->Sender->name }}</b>
                                                     </div>
                                                     <div class="card-body">
@@ -593,7 +599,7 @@
                     success: function(response) {
                         $("textarea").val("");
                         if (response.foto_profil != null) {
-                            let foto = 'storage/'+response.foto_profil;
+                            let foto = 'storage/' + response.foto_profil;
                         } else {
                             let foto = 'profile-default.png'
                         }
@@ -686,7 +692,7 @@
                     success: function(response) {
                         $("textarea").val("");
                         if (response.foto_profil != null) {
-                            let foto = 'storage/'+response.foto_profil;
+                            let foto = 'storage/' + response.foto_profil;
                         } else {
                             let foto = 'profile-default.png'
                         }
@@ -782,7 +788,7 @@
                     success: function(response) {
                         $("textarea").val("");
                         if (response.foto_profil != null) {
-                            let foto = 'storage/'+response.foto_profil;
+                            let foto = 'storage/' + response.foto_profil;
                         } else {
                             let foto = 'profile-default.png'
                         }

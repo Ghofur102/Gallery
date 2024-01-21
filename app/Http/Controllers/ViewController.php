@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Posts;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class ViewController extends Controller
 {
@@ -24,11 +25,13 @@ class ViewController extends Controller
     }
     public function profile()
     {
-        return view('profile');
+        $count_posts = Posts::where('user_id', Auth::user()->id)->count();
+        return view('profile', compact('count_posts'));
     }
     public function profile_oranglain($id)
     {
         $user = User::findOrFail($id);
-        return view('profile_oranglain', compact('user'));
+        $count_posts = Posts::where('user_id', $id)->count();
+        return view('profile_oranglain', compact('user', 'count_posts'));
     }
 }
