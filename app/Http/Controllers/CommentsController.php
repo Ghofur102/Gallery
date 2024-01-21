@@ -45,6 +45,7 @@ class CommentsController extends Controller
                 'parent_id' => $comment->parent_id,
                 'parent_main_id' => $comment->parent_main_id,
                 'recipient_name' => $comment->Recipient->name,
+                'foto_sender' => $comment->Sender->foto_profil
             ]);
 
 

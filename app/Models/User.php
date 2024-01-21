@@ -21,6 +21,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'foto_profil',
+        'tentang'
     ];
 
     /**
@@ -60,5 +62,8 @@ class User extends Authenticatable
     }
     public function Post_Album() {
         return $this->belongsToMany(Posts::class, 'albums', 'user_id', 'post_id');
+    }
+    public function Count_Photos() {
+        return Posts::where('user_id', $this->id)->count();
     }
 }

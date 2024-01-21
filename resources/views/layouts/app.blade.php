@@ -28,18 +28,35 @@
             background-color: #E7AB79 !important;
             border-color: #E7AB79 !important;
         }
+
         .text-primary {
-            color: #E7AB79 !important;
+            color: #4C3A51 !important;
         }
+
         .dropdown-item:active {
             background-color: #4C3A51 !important;
+        }
+
+        .text-love {
+            color: red;
+        }
+
+        .gradient-custom-2 {
+            /* fallback for old browsers */
+            background: white;
+
+            /* Chrome 10-25, Safari 5.1-6 */
+            background: -webkit-linear-gradient(to right, rgb(76, 58, 81), rgb(119, 67, 96));
+
+            /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+            background: linear-gradient(to right, rgb(178, 80, 104), rgb(231, 171, 121))
         }
     </style>
 </head>
 
-<body>
+<body class="gradient-custom-2">
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light shadow-sm" style="background-color: #B25068;">
+        <nav class="navbar navbar-expand-md navbar-light gradient-custom-2">
             <div class="container">
                 <h1>
                     <a class="navbar-brand" style="font-family: UnifrakturCook;font-size: 32px;color:white;"
@@ -62,32 +79,51 @@
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-item my-auto">
-                            <a class="nav-link {{ request()->is('/') ? 'text-white' : 'text-primary' }}" href="/"><b>Home</b></a>
+                            <a class="nav-link {{ request()->is('/') ? 'text-white' : 'text-primary' }}"
+                                href="/"><b>Home</b></a>
                         </li>
                         <li class="nav-item my-auto">
-                            <a class="nav-link {{ request()->is('gallery') ? 'text-white' : 'text-primary' }}" href="/gallery"><b>Gallery</b></a>
+                            <a class="nav-link {{ request()->is('gallery') ? 'text-white' : 'text-primary' }}"
+                                href="/gallery"><b>Gallery</b></a>
                         </li>
                         <!-- Authentication Links -->
                         @guest
                             @if (Route::has('login'))
                                 <li class="nav-item my-auto py-2">
-                                    <a class="btn btn-primary btn-sm mx-1" href="{{ route('login') }}">{{ __('Login') }}</a>
+                                    <a class="btn btn-primary btn-sm mx-1"
+                                        href="{{ route('login') }}">{{ __('Login') }}</a>
                                 </li>
                             @endif
 
                             @if (Route::has('register'))
                                 <li class="nav-item my-auto py-2">
-                                    <a class="btn btn-primary btn-sm mx-1" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                    <a class="btn btn-primary btn-sm mx-1"
+                                        href="{{ route('register') }}">{{ __('Register') }}</a>
                                 </li>
                             @endif
                         @else
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
                                     data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    <img src="{{ asset('SqOmUpVYTMafFRE2k2rbvW8XyButf7rwMnz1mbwY.jpg') }}" style="width: 50px;height: 50px; object-fit:cover;border-radius:50%;" alt="">
+                                    @guest
+                                        <img src="{{ asset('profile-default.png') }}"
+                                            style="width: 50px;height: 50px; object-fit:cover;border-radius:50%;"
+                                            alt="">
+                                    @else
+                                        @if (Auth::user()->foto_profil != null)
+                                            <img src="{{ asset('storage/' . Auth::user()->foto_profil) }}"
+                                                style="width: 50px;height: 50px; object-fit:cover;border-radius:50%;"
+                                                alt="">
+                                        @else
+                                            <img src="{{ asset('profile-default.png') }}"
+                                                style="width: 50px;height: 50px; object-fit:cover;border-radius:50%;"
+                                                alt="">
+                                        @endif
+                                    @endguest
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="/profile">Profile Anda</a>
                                     <a class="dropdown-item" href="/postingan-anda">Postingan Anda</a>
                                     <a class="dropdown-item" href="/album">Album</a>
                                     <a class="dropdown-item" href="{{ route('logout') }}"

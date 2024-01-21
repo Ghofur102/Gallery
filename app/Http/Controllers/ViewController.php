@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Posts;
+use App\Models\User;
+
 class ViewController extends Controller
 {
     public function gallery()
@@ -19,5 +21,14 @@ class ViewController extends Controller
         }
         $posts = Posts::inRandomOrder()->take(3)->whereNot('slug', $slug)->get();
         return view('show_post', compact('post', 'posts'));
+    }
+    public function profile()
+    {
+        return view('profile');
+    }
+    public function profile_oranglain($id)
+    {
+        $user = User::findOrFail($id);
+        return view('profile_oranglain', compact('user'));
     }
 }

@@ -1,14 +1,34 @@
 @extends('layouts.app')
 
 @section('content')
+<style>
+    .text-love {
+        color: red !important;
+    }
+</style>
     <div class="container">
         <div class="card">
-            <div class="card-header text-center">
-                <h1>
+            <div class="card-header">
+                <h1 class="text-center">
                     <b>
                         {{ $post->judul_gambar }}
                     </b>
                 </h1>
+                <a href="/profile-oranglain/{{ $post->User->id }}">
+                    @guest
+                    <img src="{{ asset('profile-default.png') }}"
+                        style="width: 50px;height: 50px; object-fit:cover;border-radius:50%;" alt="">
+                @else
+                    @if (Auth::user()->foto_profil != null)
+                        <img src="{{ asset('storage/' . Auth::user()->foto_profil) }}"
+                            style="width: 50px;height: 50px; object-fit:cover;border-radius:50%;" alt="">
+                    @else
+                        <img src="{{ asset('profile-default.png') }}"
+                            style="width: 50px;height: 50px; object-fit:cover;border-radius:50%;" alt="">
+                    @endif
+                @endguest
+                </a>
+                - {{ \Carbon\Carbon::parse($post->created_at)->locale('id_ID')->diffForHumans() }}
             </div>
             <div class="">
                 <img width="100%" src="{{ asset('storage/' . $post->gambar) }}" alt="{{ $post->gambar }}"> <br>
@@ -22,7 +42,7 @@
                         @if ($post->Is_Like())
                             <button type="button" class="btn btn-light m-1"
                                 onclick="LikePost({{ Auth::user()->id }}, {{ $post->User->id }}, {{ $post->id }})">
-                                <svg id="like-postingan" class="text-primary" xmlns="http://www.w3.org/2000/svg" width="24"
+                                <svg id="like-postingan" class="text-love" xmlns="http://www.w3.org/2000/svg" width="24"
                                     height="24" viewBox="0 0 1024 1024">
                                     <path fill="currentColor"
                                         d="M885.9 533.7c16.8-22.2 26.1-49.4 26.1-77.7c0-44.9-25.1-87.4-65.5-111.1a67.67 67.67 0 0 0-34.3-9.3H572.4l6-122.9c1.4-29.7-9.1-57.9-29.5-79.4A106.62 106.62 0 0 0 471 99.9c-52 0-98 35-111.8 85.1l-85.9 311H144c-17.7 0-32 14.3-32 32v364c0 17.7 14.3 32 32 32h601.3c9.2 0 18.2-1.8 26.5-5.4c47.6-20.3 78.3-66.8 78.3-118.4c0-12.6-1.8-25-5.4-37c16.8-22.2 26.1-49.4 26.1-77.7c0-12.6-1.8-25-5.4-37c16.8-22.2 26.1-49.4 26.1-77.7c-.2-12.6-2-25.1-5.6-37.1M184 852V568h81v284zm636.4-353l-21.9 19l13.9 25.4a56.2 56.2 0 0 1 6.9 27.3c0 16.5-7.2 32.2-19.6 43l-21.9 19l13.9 25.4a56.2 56.2 0 0 1 6.9 27.3c0 16.5-7.2 32.2-19.6 43l-21.9 19l13.9 25.4a56.2 56.2 0 0 1 6.9 27.3c0 22.4-13.2 42.6-33.6 51.8H329V564.8l99.5-360.5a44.1 44.1 0 0 1 42.2-32.3c7.6 0 15.1 2.2 21.1 6.7c9.9 7.4 15.2 18.6 14.6 30.5l-9.6 198.4h314.4C829 418.5 840 436.9 840 456c0 16.5-7.2 32.1-19.6 43" />
@@ -95,9 +115,21 @@
                         <div class="my-3" style="border: 1px solid black;border-radius: 5px;">
                             <div class="card">
                                 <div class="card-header">
-                                    <img src="{{ asset('SqOmUpVYTMafFRE2k2rbvW8XyButf7rwMnz1mbwY.jpg') }}"
-                                        style="width: 50px;height: 50px;border-radius: 50%;object-fit:cover;"
-                                        alt="">
+                                    @guest
+                                        <img src="{{ asset('profile-default.png') }}"
+                                            style="width: 50px;height: 50px; object-fit:cover;border-radius:50%;"
+                                            alt="">
+                                    @else
+                                        @if (Auth::user()->foto_profil != null)
+                                            <img src="{{ asset('storage/' . Auth::user()->foto_profil) }}"
+                                                style="width: 50px;height: 50px; object-fit:cover;border-radius:50%;"
+                                                alt="">
+                                        @else
+                                            <img src="{{ asset('profile-default.png') }}"
+                                                style="width: 50px;height: 50px; object-fit:cover;border-radius:50%;"
+                                                alt="">
+                                        @endif
+                                    @endguest
                                     <b>{{ $item->Sender->name }}</b>
                                 </div>
                                 <div class="card-body">
@@ -113,7 +145,7 @@
                                             <button type="submit" onclick="LikeComment({{ $item->id }})"
                                                 class="btn btn-light m-1">
                                                 @if ($item->IsLike())
-                                                    <svg id="svg_like{{ $item->id }}" class="text-primary"
+                                                    <svg id="svg_like{{ $item->id }}" class="text-love"
                                                         xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                                         viewBox="0 0 24 24">
                                                         <g fill="none" stroke="currentColor" stroke-linecap="round"
@@ -172,40 +204,53 @@
                                     <div class="mx-5">
                                         <div class="my-2">
                                             @auth
-                                            <form id="FormReplyComment{{ $item->id }}"
-                                                action="{{ route('komentar.store', ['sender_id' => Auth::user()->id, 'recipient_id' => $post->User->id, 'post_id' => $post->id, 'parent_id' => $item->id]) }}"
-                                                method="post">
-                                                @csrf
-                                                <div class="mb-3">
-                                                    <textarea name="comment" id="reply-comment" class="form-control" rows="3" placeholder="Masukkan komentar."></textarea>
-                                                </div>
-                                                <div class="mb-3 text-end">
-                                                    <button type="submit" onclick="StoreReplyComment({{ $item->id }})"
-                                                        class="btn btn-primary">Simpan</button>
-                                                </div>
-                                            </form>
-                                        @else
-                                            <form id="FormReplyComment"
-                                                action="{{ route('komentar.store', ['recipient_id' => $post->User->id, 'post_id' => $post->id]) }}"
-                                                method="post">
-                                                @csrf
-                                                <div class="mb-3">
-                                                    <textarea name="comment" id="reply-comment" class="form-control" rows="3" placeholder="Masukkan komentar."></textarea>
-                                                </div>
-                                                <div class="mb-3 text-end">
-                                                    <button type="submit" class="btn btn-primary">Simpan</button>
-                                                </div>
-                                            </form>
-                                        @endauth
+                                                <form id="FormReplyComment{{ $item->id }}"
+                                                    action="{{ route('komentar.store', ['sender_id' => Auth::user()->id, 'recipient_id' => $post->User->id, 'post_id' => $post->id, 'parent_id' => $item->id]) }}"
+                                                    method="post">
+                                                    @csrf
+                                                    <div class="mb-3">
+                                                        <textarea name="comment" id="reply-comment" class="form-control" rows="3" placeholder="Masukkan komentar."></textarea>
+                                                    </div>
+                                                    <div class="mb-3 text-end">
+                                                        <button type="submit"
+                                                            onclick="StoreReplyComment({{ $item->id }})"
+                                                            class="btn btn-primary">Simpan</button>
+                                                    </div>
+                                                </form>
+                                            @else
+                                                <form id="FormReplyComment"
+                                                    action="{{ route('komentar.store', ['recipient_id' => $post->User->id, 'post_id' => $post->id]) }}"
+                                                    method="post">
+                                                    @csrf
+                                                    <div class="mb-3">
+                                                        <textarea name="comment" id="reply-comment" class="form-control" rows="3" placeholder="Masukkan komentar."></textarea>
+                                                    </div>
+                                                    <div class="mb-3 text-end">
+                                                        <button type="submit" class="btn btn-primary">Simpan</button>
+                                                    </div>
+                                                </form>
+                                            @endauth
                                         </div>
                                         @foreach ($item->ReplyComment() as $reply)
-                                        <div id="reply_comment{{ $reply->id }}"></div>
+                                            <div id="reply_comment{{ $reply->id }}"></div>
                                             <div class="my-3">
                                                 <div class="card">
                                                     <div class="card-header">
-                                                        <img src="{{ asset('SqOmUpVYTMafFRE2k2rbvW8XyButf7rwMnz1mbwY.jpg') }}"
-                                                            style="width: 50px;height: 50px;border-radius: 50%;object-fit:cover;"
-                                                            alt="">
+                                                        @guest
+                                                            <img src="{{ asset('profile-default.png') }}"
+                                                                style="width: 50px;height: 50px; object-fit:cover;border-radius:50%;"
+                                                                alt="">
+                                                        @else
+                                                            @if (Auth::user()->foto_profil != null)
+                                                                <img src="{{ asset('storage/' . Auth::user()->foto_profil) }}"
+                                                                    style="width: 50px;height: 50px; object-fit:cover;border-radius:50%;"
+                                                                    alt="">
+                                                            @else
+                                                                <img src="{{ asset('profile-default.png') }}"
+                                                                    style="width: 50px;height: 50px; object-fit:cover;border-radius:50%;"
+                                                                    alt="">
+                                                            @endif
+                                                        @endguest
                                                         <b>{{ $reply->Sender->name }}</b>
                                                     </div>
                                                     <div class="card-body">
@@ -218,11 +263,12 @@
                                                                 action="{{ route('like.comment', ['sender' => Auth::user()->id, 'recipient' => $reply->Sender->id, 'comment' => $reply->id]) }}"
                                                                 method="post">
                                                                 @csrf
-                                                                <button type="submit" onclick="LikeComment({{ $reply->id }})"
+                                                                <button type="submit"
+                                                                    onclick="LikeComment({{ $reply->id }})"
                                                                     class="btn btn-light m-1">
                                                                     @if ($reply->IsLike())
                                                                         <svg id="svg_like{{ $reply->id }}"
-                                                                            class="text-primary"
+                                                                            class="text-love"
                                                                             xmlns="http://www.w3.org/2000/svg" width="24"
                                                                             height="24" viewBox="0 0 24 24">
                                                                             <g fill="none" stroke="currentColor"
@@ -304,7 +350,8 @@
                                                                     <textarea name="comment" id="reply-comment" class="form-control" rows="3" placeholder="Masukkan komentar."></textarea>
                                                                 </div>
                                                                 <div class="mb-3 text-end">
-                                                                    <button type="submit" class="btn btn-primary">Simpan</button>
+                                                                    <button type="submit"
+                                                                        class="btn btn-primary">Simpan</button>
                                                                 </div>
                                                             </form>
                                                         @endauth
@@ -313,17 +360,29 @@
                                             </div>
                                         @endforeach
                                         @foreach ($item->Reply2Comment() as $reply2)
-                                        <div id="reply2_comment{{ $reply2->id }}"></div>
+                                            <div id="reply2_comment{{ $reply2->id }}"></div>
                                             <div class="my-3">
                                                 <div class="card">
                                                     <div class="card-header">
-                                                        <img src="{{ asset('SqOmUpVYTMafFRE2k2rbvW8XyButf7rwMnz1mbwY.jpg') }}"
-                                                            style="width: 50px;height: 50px;border-radius: 50%;object-fit:cover;"
-                                                            alt="">
+                                                        @guest
+                                                            <img src="{{ asset('profile-default.png') }}"
+                                                                style="width: 50px;height: 50px; object-fit:cover;border-radius:50%;"
+                                                                alt="">
+                                                        @else
+                                                            @if (Auth::user()->foto_profil != null)
+                                                                <img src="{{ asset('storage/' . Auth::user()->foto_profil) }}"
+                                                                    style="width: 50px;height: 50px; object-fit:cover;border-radius:50%;"
+                                                                    alt="">
+                                                            @else
+                                                                <img src="{{ asset('profile-default.png') }}"
+                                                                    style="width: 50px;height: 50px; object-fit:cover;border-radius:50%;"
+                                                                    alt="">
+                                                            @endif
+                                                        @endguest
                                                         <b>{{ $reply2->Sender->name }}</b>
                                                     </div>
                                                     <div class="card-body">
-                                                        {{ '@'.$reply2->Recipient->name }} {{ $reply2->komentar }}
+                                                        {{ '@' . $reply2->Recipient->name }} {{ $reply2->komentar }}
                                                     </div>
                                                     <div class="card-footer d-flex">
                                                         {{-- like --}}
@@ -332,11 +391,12 @@
                                                                 action="{{ route('like.comment', ['sender' => Auth::user()->id, 'recipient' => $reply2->Sender->id, 'comment' => $reply2->id]) }}"
                                                                 method="post">
                                                                 @csrf
-                                                                <button type="submit" onclick="LikeComment({{ $reply2->id }})"
+                                                                <button type="submit"
+                                                                    onclick="LikeComment({{ $reply2->id }})"
                                                                     class="btn btn-light m-1">
                                                                     @if ($reply2->IsLike())
                                                                         <svg id="svg_like{{ $reply2->id }}"
-                                                                            class="text-primary"
+                                                                            class="text-love"
                                                                             xmlns="http://www.w3.org/2000/svg" width="24"
                                                                             height="24" viewBox="0 0 24 24">
                                                                             <g fill="none" stroke="currentColor"
@@ -418,7 +478,8 @@
                                                                     <textarea name="comment" id="reply-comment" class="form-control" rows="3" placeholder="Masukkan komentar."></textarea>
                                                                 </div>
                                                                 <div class="mb-3 text-end">
-                                                                    <button type="submit" class="btn btn-primary">Simpan</button>
+                                                                    <button type="submit"
+                                                                        class="btn btn-primary">Simpan</button>
                                                                 </div>
                                                             </form>
                                                         @endauth
@@ -458,11 +519,11 @@
                 success: function(response) {
                     if ($("#like-postingan").hasClass('text-black')) {
                         $("#like-postingan").removeClass('text-black');
-                        $("#like-postingan").addClass('text-primary');
+                        $("#like-postingan").addClass('text-love');
                         let new_count = parseInt($("#count-like-post").text()) + 1;
                         $("#count-like-post").html(new_count);
                     } else {
-                        $("#like-postingan").removeClass('text-primary');
+                        $("#like-postingan").removeClass('text-love');
                         $("#like-postingan").addClass('text-black');
                         let new_count = parseInt($("#count-like-post").text()) - 1;
                         $("#count-like-post").html(new_count);
@@ -495,12 +556,12 @@
                     success: function(response) {
                         if ($("#svg_like" + id).hasClass("text-secondary")) {
                             $("#svg_like" + id).removeClass("text-secondary");
-                            $("#svg_like" + id).addClass("text-primary");
+                            $("#svg_like" + id).addClass("text-love");
                             let count = parseInt($("#count_like_comment" + id).text()) + 1;
                             $("#count_like_comment" + id).html(count);
                         } else {
                             $("#svg_like" + id).addClass("text-secondary");
-                            $("#svg_like" + id).removeClass("text-primary");
+                            $("#svg_like" + id).removeClass("text-love");
                             let count = parseInt($("#count_like_comment" + id).text()) - 1;
                             $("#count_like_comment" + id).html(count);
                         }
@@ -531,11 +592,16 @@
                     contentType: false,
                     success: function(response) {
                         $("textarea").val("");
+                        if (response.foto_profil != null) {
+                            let foto = 'storage/'+response.foto_profil;
+                        } else {
+                            let foto = 'profile-default.png'
+                        }
                         $("#main_comment").html(`
                     <div class="my-3">
                         <div class="card">
                             <div class="card-header">
-                                <img src="{{ asset('SqOmUpVYTMafFRE2k2rbvW8XyButf7rwMnz1mbwY.jpg') }}"
+                                <img src="{{ asset('${foto}') }}"
                                     style="width: 50px;height: 50px;border-radius: 50%;object-fit:cover;" alt="">
                                 <b>{{ Auth::user()->name }}</b>
                             </div>
@@ -607,7 +673,7 @@
 
         function StoreReplyComment(id) {
             $("#FormReplyComment" + id).off("submit");
-            $("#FormReplyComment" + id).submit(function (e) {
+            $("#FormReplyComment" + id).submit(function(e) {
                 e.preventDefault();
                 let route = $(this).attr("action");
                 let data = new FormData($(this)[0]);
@@ -617,14 +683,19 @@
                     method: "POST",
                     processData: false,
                     contentType: false,
-                    success: function (response) {
+                    success: function(response) {
                         $("textarea").val("");
-                        $("#reply_comment"+id).html(`
+                        if (response.foto_profil != null) {
+                            let foto = 'storage/'+response.foto_profil;
+                        } else {
+                            let foto = 'profile-default.png'
+                        }
+                        $("#reply_comment" + id).html(`
                                         <div id="reply2_comment${response.id}"></div>
                                         <div class="my-3">
                                             <div class="card">
                                                 <div class="card-header">
-                                                    <img src="{{ asset('SqOmUpVYTMafFRE2k2rbvW8XyButf7rwMnz1mbwY.jpg') }}"
+                                                    <img src="{{ asset('${foto}') }}"
                                                         style="width: 50px;height: 50px;border-radius: 50%;object-fit:cover;"
                                                         alt="">
                                                     <b>{{ Auth::user()->name }}</b>
@@ -684,7 +755,7 @@
                                         </div>
                         `);
                     },
-                    error: function (xhr, error, status) {
+                    error: function(xhr, error, status) {
                         iziToast.destroy();
                         iziToast.error({
                             "title": "Error",
@@ -695,9 +766,10 @@
                 });
             });
         }
+
         function StoreReply2Comment(id) {
             $("#FormReply2Comment" + id).off("submit");
-            $("#FormReply2Comment" + id).submit(function (e) {
+            $("#FormReply2Comment" + id).submit(function(e) {
                 e.preventDefault();
                 let route = $(this).attr("action");
                 let data = new FormData($(this)[0]);
@@ -707,14 +779,19 @@
                     method: "POST",
                     processData: false,
                     contentType: false,
-                    success: function (response) {
+                    success: function(response) {
                         $("textarea").val("");
-                        $("#reply2_comment"+id).html(`
+                        if (response.foto_profil != null) {
+                            let foto = 'storage/'+response.foto_profil;
+                        } else {
+                            let foto = 'profile-default.png'
+                        }
+                        $("#reply2_comment" + id).html(`
                                         <div id="reply2_comment${response.id}"></div>
                                         <div class="my-3">
                                             <div class="card">
                                                 <div class="card-header">
-                                                    <img src="{{ asset('SqOmUpVYTMafFRE2k2rbvW8XyButf7rwMnz1mbwY.jpg') }}"
+                                                    <img src="{{ asset('${foto}') }}"
                                                         style="width: 50px;height: 50px;border-radius: 50%;object-fit:cover;"
                                                         alt="">
                                                     <b>{{ Auth::user()->name }}</b>
@@ -774,7 +851,7 @@
                                         </div>
                         `);
                     },
-                    error: function (xhr, error, status) {
+                    error: function(xhr, error, status) {
                         iziToast.destroy();
                         iziToast.error({
                             "title": "Error",

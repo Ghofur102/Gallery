@@ -16,7 +16,7 @@
                                 <button type="submit" onclick="store_album({{ $item->id }})" class="btn btn-light" style="background-color:transparent;border-color:transparent;">
                                     @auth
                                         @if ($item->IsInAlbum())
-                                            <svg id="svg_album{{ $item->id }}" class="text-primary"
+                                            <svg id="svg_album{{ $item->id }}" class="text-love"
                                                 xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                                 viewBox="0 0 24 24">
                                                 <path fill="currentColor"
@@ -62,9 +62,9 @@
                     success: function(response) {
                         if ($("#svg_album" + id).hasClass('text-secondary')) {
                             $("#svg_album" + id).removeClass('text-secondary');
-                            $("#svg_album" + id).addClass('text-primary');
+                            $("#svg_album" + id).addClass('text-love');
                         } else {
-                            $("#svg_album" + id).removeClass('text-primary');
+                            $("#svg_album" + id).removeClass('text-love');
                             $("#svg_album" + id).addClass('text-secondary');
                         }
                     },
