@@ -10,9 +10,9 @@
                     </b>
                 </h1>
             </div>
-            <div class="card-body">
+            <div class="">
                 <img width="100%" src="{{ asset('storage/' . $post->gambar) }}" alt="{{ $post->gambar }}"> <br>
-                <b style="font-size: 20px;">
+                <b style="font-size: 20px;padding:5px;">
                     {{ $post->deskripsi_gambar }}
                 </b>
             </div>

@@ -20,15 +20,33 @@
         crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/js/iziToast.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/css/iziToast.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=UnifrakturCook:wght@700&display=swap" rel="stylesheet">
+    <style>
+        .btn-primary {
+            background-color: #E7AB79 !important;
+            border-color: #E7AB79 !important;
+        }
+        .text-primary {
+            color: #E7AB79 !important;
+        }
+        .dropdown-item:active {
+            background-color: #4C3A51 !important;
+        }
+    </style>
 </head>
 
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+        <nav class="navbar navbar-expand-md navbar-light shadow-sm" style="background-color: #B25068;">
             <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Laravel') }}
-                </a>
+                <h1>
+                    <a class="navbar-brand" style="font-family: UnifrakturCook;font-size: 32px;color:white;"
+                        href="{{ url('/') }}">
+                        Gall
+                    </a>
+                </h1>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
@@ -43,30 +61,30 @@
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ms-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" href="/">Home</a>
+                        <li class="nav-item my-auto">
+                            <a class="nav-link {{ request()->is('/') ? 'text-white' : 'text-primary' }}" href="/"><b>Home</b></a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/gallery">Gallery</a>
+                        <li class="nav-item my-auto">
+                            <a class="nav-link {{ request()->is('gallery') ? 'text-white' : 'text-primary' }}" href="/gallery"><b>Gallery</b></a>
                         </li>
                         <!-- Authentication Links -->
                         @guest
                             @if (Route::has('login'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                                <li class="nav-item my-auto py-2">
+                                    <a class="btn btn-primary btn-sm mx-1" href="{{ route('login') }}">{{ __('Login') }}</a>
                                 </li>
                             @endif
 
                             @if (Route::has('register'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                <li class="nav-item my-auto py-2">
+                                    <a class="btn btn-primary btn-sm mx-1" href="{{ route('register') }}">{{ __('Register') }}</a>
                                 </li>
                             @endif
                         @else
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
                                     data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }}
+                                    <img src="{{ asset('SqOmUpVYTMafFRE2k2rbvW8XyButf7rwMnz1mbwY.jpg') }}" style="width: 50px;height: 50px; object-fit:cover;border-radius:50%;" alt="">
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">

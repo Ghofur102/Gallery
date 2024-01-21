@@ -6,7 +6,9 @@
             <div class="row justify-content-center">
                 <div class="col-md-8">
                     <div class="card">
-                        <div class="card-header">{{ __('Dashboard') }}</div>
+                        <div class="card-header text-center">
+                           <b>Tambah Postingan Anda.</b>
+                        </div>
 
                         <div class="card-body">
                             @if (session('status'))
@@ -23,14 +25,14 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="judul_gambar" class="form-label">Judul Gambar</label>
-                                    <input type="text" name="judul_gambar" id="judul_gambar" class="form-control">
+                                    <input type="text" name="judul_gambar" id="judul_gambar" class="form-control" placeholder="Berikan judul gambar.">
                                 </div>
                                 <div class="mb-3">
                                     <label for="deskripsi_gambar" class="form-label">Deskripsi Gambar</label>
-                                    <textarea name="deskripsi_gambar" id="deskripsi_gambar" class="form-control" cols="30" rows="10"></textarea>
+                                    <textarea name="deskripsi_gambar" id="deskripsi_gambar" class="form-control" cols="30" rows="10" placeholder="Berikan deskripsi gambar."></textarea>
                                 </div>
                                 <div class="mb-3">
-                                    <button type="submit" class="btn btn-primary">Simpan</button>
+                                    <button type="submit" class="btn btn-primary float-end">Simpan</button>
                                 </div>
                             </form>
 
@@ -42,13 +44,11 @@
                 @foreach ($posts as $item)
                     <div class="col-sm-12 col-md-6 col-lg-4">
                         <div class="card">
-                            <div class="card-body">
+                            <div class="" style="position: relative;">
                                 <a href="{{ route('show.post', $item->slug) }}">
                                     <img width="100%" src="{{ asset('storage/' . $item->gambar) }}" alt="{{ $item->gambar }}">
                                 </a>
-                            </div>
-                            <div class="card-footer">
-                                <div class="d-flex">
+                                <div class="d-flex" style="position: absolute;bottom: 0px;background-color:aliceblue;padding: 6px; border:1px solid black;border-top-right-radius:6px;">
                                     <svg class="text-danger" data-bs-toggle="modal"
                                         data-bs-target="#modal_confirmation_delete{{ $item->id }}"
                                         xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
