@@ -3,11 +3,11 @@
 @section('content')
     <section style="font-family: UnifrakturCook;">
         <div class="text-center mx-5">
-            <h1>Welcome To Website <span style="color: white;">Gall</span></h1>
+            <h1>Welcome To Website <span style="color: black;">Gall</span></h1>
             <h3>
                 Tempat dimana anda dapat membagikan foto-foto terbaik anda serta mendapat inspirasi dari berbagai foto
                 unggahan pengguna lain.
-                Bagikan foto dan carilah inspirasi, <span style="color: white;">apapun itu membuat hidup anda menjadi lebih
+                Bagikan foto dan carilah inspirasi, <span style="color: black;">apapun itu membuat hidup anda menjadi lebih
                     baik.</span>
             </h3>
         </div>
@@ -46,7 +46,7 @@
     @endif
     <section style="font-family: UnifrakturCook;">
         <div class="text-center mx-5 my-3">
-            <h3 style="color: white;">
+            <h3 style="color: black;">
               Jangan lupa untuk membagikan foto terbaik anda disini.
             </h3>
         </div>

@@ -598,10 +598,11 @@
                     contentType: false,
                     success: function(response) {
                         $("textarea").val("");
-                        if (response.foto_profil != null) {
-                            let foto = 'storage/' + response.foto_profil;
+                        let foto;
+                        if (response.foto_sender != null) {
+                            foto = 'storage/' + response.foto_sender;
                         } else {
-                            let foto = 'profile-default.png'
+                            foto = 'profile-default.png'
                         }
                         $("#main_comment").html(`
                     <div class="my-3">
@@ -691,10 +692,11 @@
                     contentType: false,
                     success: function(response) {
                         $("textarea").val("");
-                        if (response.foto_profil != null) {
-                            let foto = 'storage/' + response.foto_profil;
+                        let foto;
+                        if (response.foto_sender != null) {
+                            foto = 'storage/' + response.foto_sender;
                         } else {
-                            let foto = 'profile-default.png'
+                            foto = 'profile-default.png'
                         }
                         $("#reply_comment" + id).html(`
                                         <div id="reply2_comment${response.id}"></div>
@@ -787,10 +789,11 @@
                     contentType: false,
                     success: function(response) {
                         $("textarea").val("");
-                        if (response.foto_profil != null) {
-                            let foto = 'storage/' + response.foto_profil;
+                        let foto;
+                        if (response.foto_sender != null) {
+                            foto = 'storage/' + response.foto_sender;
                         } else {
-                            let foto = 'profile-default.png'
+                            foto = 'profile-default.png'
                         }
                         $("#reply2_comment" + id).html(`
                                         <div id="reply2_comment${response.id}"></div>

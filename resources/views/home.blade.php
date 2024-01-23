@@ -7,7 +7,7 @@
                 <div class="col-md-8">
                     <div class="card">
                         <div class="card-header text-center">
-                           <b>Tambah Postingan Anda.</b>
+                            <b>Tambah Postingan Anda.</b>
                         </div>
 
                         <div class="card-body">
@@ -25,11 +25,13 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="judul_gambar" class="form-label">Judul Gambar</label>
-                                    <input type="text" name="judul_gambar" id="judul_gambar" class="form-control" placeholder="Berikan judul gambar.">
+                                    <input type="text" name="judul_gambar" id="judul_gambar" class="form-control"
+                                        placeholder="Berikan judul gambar.">
                                 </div>
                                 <div class="mb-3">
                                     <label for="deskripsi_gambar" class="form-label">Deskripsi Gambar</label>
-                                    <textarea name="deskripsi_gambar" id="deskripsi_gambar" class="form-control" cols="30" rows="10" placeholder="Berikan deskripsi gambar."></textarea>
+                                    <textarea name="deskripsi_gambar" id="deskripsi_gambar" class="form-control" cols="30" rows="10"
+                                        placeholder="Berikan deskripsi gambar."></textarea>
                                 </div>
                                 <div class="mb-3">
                                     <button type="submit" class="btn btn-primary float-end">Simpan</button>
@@ -48,7 +50,8 @@
                                 <a href="{{ route('show.post', $item->slug) }}">
                                     <img width="100%" src="{{ asset('storage/' . $item->gambar) }}" alt="{{ $item->gambar }}">
                                 </a>
-                                <div class="d-flex" style="position: absolute;bottom: 0px;background-color:aliceblue;padding: 6px; border:1px solid black;border-top-right-radius:6px;">
+                                <div class="d-flex"
+                                    style="position: absolute;bottom: 0px;background-color:aliceblue;padding: 6px; border:1px solid black;border-top-right-radius:6px;">
                                     <svg class="text-danger" data-bs-toggle="modal"
                                         data-bs-target="#modal_confirmation_delete{{ $item->id }}"
                                         xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
@@ -121,6 +124,56 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <svg data-bs-target="#modal_album{{ $item->id }}" data-bs-toggle="modal"
+                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                        viewBox="0 0 512 512">
+                                        <path fill="currentColor"
+                                            d="M128 64h256v32H128zm-32 48h320v32H96zm368 336H48V160h416Z" />
+                                    </svg>
+                                    <div class="modal" id="modal_album{{ $item->id }}" tabindex="-1">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title">Masukkan ke album.</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form id="FormAddOrUpdateAlbum{{ $item->id }}" action="{{ route('addOrUpdate.myalbum', $item->id) }}"
+                                                        method="post">
+                                                        @csrf
+                                                        <div class="btn-group" role="group"
+                                                            aria-label="Basic checkbox toggle button group">
+                                                            @forelse ($myalbums as $album)
+                                                                <div class="form-check">
+                                                                    @if ($album->check_post($item->id))
+                                                                    <input class="form-check-input" type="radio"
+                                                                    name="album" value="{{ $album->id }}" checked
+                                                                    id="flexRadioDefault{{ $album->id }}">
+                                                                    @else
+                                                                    <input class="form-check-input" type="radio"
+                                                                    name="album" value="{{ $album->id }}"
+                                                                    id="flexRadioDefault{{ $album->id }}">
+                                                                    @endif
+                                                                    <label class="form-check-label"
+                                                                        for="flexRadioDefault{{ $album->id }}">
+                                                                        {{ $album->name_album }}
+                                                                    </label>
+                                                                </div>
+                                                            @empty
+                                                                <div class="text-center">
+                                                                    <b>Tidak ada data.</b>
+                                                                </div>
+                                                            @endforelse
+                                                        </div>
+                                                        <div class="mt-3">
+                                                            <button type="submit" onclick="AddOrUpdateAlbum({{ $item->id }})" class="btn btn-primary">Simpan</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -130,6 +183,41 @@
         @endauth
     </div>
     <script>
+        function AddOrUpdateAlbum(id)
+        {
+            $("#FormAddOrUpdateAlbum"+id).off("submit");
+            $("#FormAddOrUpdateAlbum"+id).submit(function(e){
+                e.preventDefault();
+                let route = $(this).attr('action');
+                let data = new FormData($(this)[0]);
+                $.ajax({
+                    url: route,
+                    method: 'POST',
+                    data: data,
+                    processData: false,
+                    contentType: false,
+                    headers: {
+                        'X-Csrf-Token': '{{ csrf_token() }}'
+                    },
+                    success: function(response) {
+                        iziToast.destroy();
+                        iziToast.success({
+                            title: 'Success',
+                            message: response.message,
+                            position: 'topCenter'
+                        });
+                    },
+                    error: function(xhr, error, status) {
+                        iziToast.destroy();
+                        iziToast.error({
+                            title: 'Error',
+                            message: xhr.responseText,
+                            position: 'topCenter'
+                        });
+                    }
+                });
+            });
+        }
         function Update(id) {
             $("#UpdatePostingan" + id).off('submit');
             $("#UpdatePostingan" + id).submit(function(event) {
@@ -146,7 +234,7 @@
                         'X-Csrf-Token': '{{ csrf_token() }}'
                     },
                     success: function(response) {
-                       location.reload();
+                        location.reload();
                     },
                     error: function(xhr, error, status) {
                         iziToast.destroy();

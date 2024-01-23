@@ -15,11 +15,12 @@ class Posts extends Model
         'gambar',
         'judul_gambar',
         'deskripsi_gambar',
-        'slug'
+        'slug',
+        'album_id'
     ];
     public function User() {
         return $this->belongsTo(User::class, 'user_id');
-    } 
+    }
     public function Likes() {
         return $this->hasMany(Likes::class, 'post_id');
     }
@@ -37,5 +38,9 @@ class Posts extends Model
     }
     public function IsInAlbum() {
         return Albums::where('post_id', $this->id)->where('user_id', Auth::user()->id)->exists();
+    }
+    public function MyAlbum()
+    {
+        return $this->belongsTo(MyAlbums::class, "album_id");
     }
 }

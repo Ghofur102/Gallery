@@ -28,6 +28,7 @@ Route::get('/postingan-anda', [App\Http\Controllers\HomeController::class, 'inde
 Route::get('/gallery', [App\Http\Controllers\ViewController::class, 'gallery'])->name('gallery');
 Route::get('/show_post/{slug}', [App\Http\Controllers\ViewController::class, 'show_post'])->name('show.post');
 Route::get('/profile-oranglain/{id}', [ViewController::class, 'profile_oranglain'])->name('profile.oranglain');
+Route::get('/show_myalbum/{id}', [AlbumController::class, 'index_myalbum'])->name('index.myalbum');
 Route::middleware(['auth'])->group(function () {
     Route::resource('/postingan', PostsController::class);
     Route::post('/like-postingan/{sender}/{recipient}/{postingan}', [LikesController::class, 'like_postingan'])->name('like.postingan');
@@ -37,4 +38,6 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('/komentar', CommentsController::class);
     Route::get('/profile', [ViewController::class, 'profile'])->name('profile');
     Route::put('/profile-update/{id}', [HomeController::class, 'profile_update'])->name('profile.update');
+    Route::post('/tambah-myalbum', [AlbumController::class, 'tambah_myalbum'])->name('tambah.myalbum');
+    Route::post('/addOrUpdate-myalbum/{post_id}', [AlbumController::class, 'addOrUpdate_myalbum'])->name('addOrUpdate.myalbum');
 });

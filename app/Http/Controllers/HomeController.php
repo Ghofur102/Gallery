@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\MyAlbums;
 use App\Models\Posts;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -29,7 +30,8 @@ class HomeController extends Controller
     public function index()
     {
         $posts = Posts::where('user_id', Auth::user()->id)->get();
-        return view('home', compact('posts'));
+        $myalbums = MyAlbums::where('user_id', Auth::user()->id)->get();
+        return view('home', compact('posts', 'myalbums'));
     }
     public function home()
     {

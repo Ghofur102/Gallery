@@ -41,25 +41,16 @@
             color: red;
         }
 
-        .gradient-custom-2 {
-            /* fallback for old browsers */
-            background: white;
 
-            /* Chrome 10-25, Safari 5.1-6 */
-            background: -webkit-linear-gradient(to right, rgb(76, 58, 81), rgb(119, 67, 96));
-
-            /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-            background: linear-gradient(to right, rgb(178, 80, 104), rgb(231, 171, 121))
-        }
     </style>
 </head>
 
-<body class="gradient-custom-2">
+<body>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light gradient-custom-2">
+        <nav class="navbar navbar-expand-md navbar-light">
             <div class="container">
                 <h1>
-                    <a class="navbar-brand" style="font-family: UnifrakturCook;font-size: 32px;color:white;"
+                    <a class="navbar-brand" style="font-family: UnifrakturCook;font-size: 32px;color:black;"
                         href="{{ url('/') }}">
                         Gall
                     </a>
@@ -79,11 +70,11 @@
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-item my-auto">
-                            <a class="nav-link {{ request()->is('/') ? 'text-white' : 'text-primary' }}"
+                            <a class="nav-link {{ request()->is('/') ? 'text-black' : 'text-primary' }}"
                                 href="/"><b>Home</b></a>
                         </li>
                         <li class="nav-item my-auto">
-                            <a class="nav-link {{ request()->is('gallery') ? 'text-white' : 'text-primary' }}"
+                            <a class="nav-link {{ request()->is('gallery') ? 'text-black' : 'text-primary' }}"
                                 href="/gallery"><b>Gallery</b></a>
                         </li>
                         <!-- Authentication Links -->

@@ -63,4 +63,8 @@ class User extends Authenticatable
     public function Post_Album() {
         return $this->belongsToMany(Posts::class, 'albums', 'user_id', 'post_id');
     }
+    public function My_Album()
+    {
+        return $this->hasMany(MyAlbums::class, "user_id");
+    }
 }
