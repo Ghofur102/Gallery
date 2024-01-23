@@ -502,13 +502,18 @@
             </div>
         </div>
         <div class="mt-3">
+            <b>Gambar Lainnya :</b>
             <div class="row">
                 @foreach ($posts as $item)
                     <div class="col-sm-12 col-md-6 col-lg-4">
-                        <a href="{{ route('show.post', $item->slug) }}">
-                            <img width="100%" src="{{ asset('storage/' . $item->gambar) }}"
-                                alt="{{ $item->gambar }}">
-                        </a>
+                        <div class="card my-3">
+                            <div class="">
+                                <a href="{{ route('show.post', $item->slug) }}">
+                                    <img width="100%" height="250px" src="{{ asset('storage/' . $item->gambar) }}" class="object-fit-cover border rounded"
+                                        alt="{{ $item->gambar }}">
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 @endforeach
             </div>

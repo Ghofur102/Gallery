@@ -11,7 +11,7 @@ class ViewController extends Controller
 {
     public function gallery()
     {
-        $posts = Posts::all();
+        $posts = Posts::inRandomOrder()->get();
         return view('gallery', compact('posts'));
     }
     public function show_post($slug)
@@ -20,7 +20,7 @@ class ViewController extends Controller
         if (!$post) {
             abort('404');
         }
-        $posts = Posts::inRandomOrder()->take(3)->whereNot('slug', $slug)->get();
+        $posts = Posts::inRandomOrder()->take(6)->whereNot('slug', $slug)->get();
         return view('show_post', compact('post', 'posts'));
     }
     public function profile()
@@ -31,6 +31,11 @@ class ViewController extends Controller
     public function profile_oranglain($id)
     {
         $user = User::findOrFail($id);
+        if (Auth::check()) {
+            if (Auth::user()->id == $id) {
+                return redirect()->route('profile');
+            }
+        }
         $count_posts = Posts::where('user_id', $id)->count();
         return view('profile_oranglain', compact('user', 'count_posts'));
     }

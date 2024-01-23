@@ -5,7 +5,7 @@
             <div class="row d-flex justify-content-center align-items-center h-100">
                 <div class="col col-lg-9 col-xl-7">
                     <div class="card">
-                        <div class="rounded-top text-white d-flex flex-row" style="background-color: #000; height:200px;">
+                        <div class="rounded-top text-white d-flex flex-row" style="background-color: #4C3A51; height:200px;">
                             <div class="ms-4 mt-5 d-flex flex-column" style="width: 150px;">
 
                                 @guest
@@ -26,7 +26,7 @@
                                     @endif
                                 @endguest
                                 <button type="button" data-bs-toggle="modal" data-bs-target="#modal_editprofil"
-                                    class="btn btn-outline-dark mt-5" data-mdb-ripple-color="dark" style="z-index: 1;">
+                                    class="btn btn-primary mt-5" data-mdb-ripple-color="dark" style="z-index: 1;">
                                     Edit profil
                                 </button>
                                 <div class="modal" id="modal_editprofil" tabindex="-1">

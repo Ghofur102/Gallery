@@ -3,10 +3,10 @@
     <div class="container">
         <div class="card">
             <div class="card-header">
-                {{ $myalbum->name_album }}
+                <b>{{ $myalbum->name_album }}</b>
             </div>
             <div class="card-body">
-                {{ $myalbum->description_album }}
+                <p>{{ $myalbum->description_album }}</p>
             </div>
         </div>
         <div class="mt-3 row">
