@@ -11,13 +11,8 @@
                         </div>
 
                         <div class="card-body">
-                            @if (session('status'))
-                                <div class="alert alert-success" role="alert">
-                                    {{ session('status') }}
-                                </div>
-                            @endif
 
-                            <form action="{{ route('postingan.store') }}" method="post" enctype="multipart/form-data">
+                            <form id="StorePost" action="{{ route('postingan.store') }}" method="post" enctype="multipart/form-data">
                                 @csrf
                                 <div class="mb-3">
                                     <label for="gambar" class="form-label">Gambar</label>
@@ -34,7 +29,7 @@
                                         placeholder="Berikan deskripsi gambar."></textarea>
                                 </div>
                                 <div class="mb-3">
-                                    <button type="submit" class="btn btn-primary float-end">Simpan</button>
+                                    <button type="submit" onclick="Store()" class="btn btn-primary float-end">Simpan</button>
                                 </div>
                             </form>
 
@@ -44,11 +39,11 @@
             </div>
             <div class="row mt-3">
                 @foreach ($posts as $item)
-                    <div class="col-sm-12 col-md-6 col-lg-4">
+                    <div class="col-sm-12 my-3 col-md-6 col-lg-4">
                         <div class="card">
                             <div class="" style="position: relative;">
                                 <a href="{{ route('show.post', $item->slug) }}">
-                                    <img width="100%" src="{{ asset('storage/' . $item->gambar) }}" alt="{{ $item->gambar }}">
+                                    <img class="object-fit-cover border rounded" width="100%" height="250px;" width="100%" src="{{ asset('storage/' . $item->gambar) }}" alt="{{ $item->gambar }}">
                                 </a>
                                 <div class="d-flex"
                                     style="position: absolute;bottom: 0px;background-color:aliceblue;padding: 6px; border:1px solid black;border-top-right-radius:6px;">
@@ -221,6 +216,35 @@
         function Update(id) {
             $("#UpdatePostingan" + id).off('submit');
             $("#UpdatePostingan" + id).submit(function(event) {
+                event.preventDefault();
+                let route = $(this).attr('action');
+                let data = new FormData($(this)[0]);
+                $.ajax({
+                    url: route,
+                    method: 'POST',
+                    data: data,
+                    processData: false,
+                    contentType: false,
+                    headers: {
+                        'X-Csrf-Token': '{{ csrf_token() }}'
+                    },
+                    success: function(response) {
+                        location.reload();
+                    },
+                    error: function(xhr, error, status) {
+                        iziToast.destroy();
+                        iziToast.error({
+                            title: 'Error',
+                            message: xhr.responseText,
+                            position: 'topCenter'
+                        });
+                    }
+                });
+            });
+        }
+        function Store() {
+            $("#StorePost").off('submit');
+            $("#StorePost").submit(function(event) {
                 event.preventDefault();
                 let route = $(this).attr('action');
                 let data = new FormData($(this)[0]);

@@ -5,10 +5,10 @@
         <div class="row">
             @forelse ($posts as $item)
                 <div class="col-sm-12 col-md-6 col-lg-4">
-                    <div class="card">
+                    <div class="card my-3">
                         <div class="" style="position:relative;">
                             <a href="{{ route('show.post', $item->slug) }}">
-                                <img style="border-radius:6px;" width="100%"
+                                <img style="border-radius:6px;" class="object-fit-cover border rounded" width="100%" height="250px;"
                                     src="{{ asset('storage/' . $item->gambar) }}" alt="{{ $item->gambar }}">
                             </a>
                             <form style="position:absolute;bottom:0px;" id="form_album{{ $item->id }}" action="/album/{{ $item->id }}" method="post">

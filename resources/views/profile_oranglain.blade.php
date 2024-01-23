@@ -50,9 +50,9 @@
                             </div>
                             <div class="row">
                                 @forelse ($user->Posts as $item)
-                                <div class="col mb-2">
+                                <div class="col-sm-12 col-md-6 col-lg-4 my-3">
                                     <a href="/show_post/{{ $item->slug }}">
-                                        <img src="{{ asset('storage/' . $item->gambar) }}" alt="image 1"
+                                        <img src="{{ asset('storage/' . $item->gambar) }}" alt="image 1" class="object-fit-cover border rounded" width="100%" height="250px;"
                                             class="w-100 rounded-3">
                                     </a>
                                 </div>

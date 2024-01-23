@@ -32,11 +32,14 @@ class PostsController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'gambar' => 'required|image|mimes:png,jpg,jpeg,gif,avif|max:50000',
+        $validate = Validator::make($request->all(), [
+            'gambar' => 'required|mimes:png,jpg,jpeg,gif,avif,webp|max:50000',
             'judul_gambar' => 'required',
             'deskripsi_gambar' => 'required|max:225'
         ]);
+        if ($validate->fails()) {
+            return response()->json($validate->errors()->first(), 422);
+        }
         Posts::create([
             'user_id' => Auth::user()->id,
             'gambar' => $request->file('gambar')->store('postingan', 'public'),
@@ -44,7 +47,9 @@ class PostsController extends Controller
             'deskripsi_gambar' => $request->deskripsi_gambar,
             'slug' => Str::uuid()
         ]);
-        return redirect()->back()->with('success', 'Sukses menambahkan postingan!');
+        return response()->json([
+            'success' => true,
+        ]);
     }
 
     /**
@@ -69,7 +74,7 @@ class PostsController extends Controller
     public function update(Request $request, string $id)
     {
         $validate = Validator::make($request->all(), [
-            'gambar' => 'nullable|image|mimes:png,jpg,jpeg,gif,avif|max:50000',
+            'gambar' => 'nullable|mimes:png,jpg,jpeg,gif,avif,webp|max:50000',
             'judul_gambar' => 'required',
             'deskripsi_gambar' => 'required|max:225'
         ]);

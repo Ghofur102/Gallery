@@ -21,7 +21,7 @@ return new class extends Migration
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
         Schema::table('posts', function (Blueprint $table) {
-            $table->unsignedBigInteger('myalbum_id')->nullable();
+            $table->unsignedBigInteger('album_id')->nullable();
             $table->foreign('album_id')->references('id')->on('my_albums')->onDelete('no action');
         });
     }
